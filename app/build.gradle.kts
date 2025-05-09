@@ -14,6 +14,22 @@ plugins {
 android {
     compileSdk = 35
 
+    val localProperties = org.jetbrains.kotlin.konan.properties.Properties().apply {
+        val localPropertiesFile = project.rootProject.file("local.properties")
+        if (localPropertiesFile.exists()) {
+            load(localPropertiesFile.inputStream())
+        }
+    }
+
+    signingConfigs {
+        create("release") {
+            storeFile = file("${System.getProperty("user.home")}/.android/keystores/glow.keystore")
+            storePassword = localProperties.getProperty("KEYSTORE_PASSWORD") ?: System.getenv("KEYSTORE_PASSWORD")
+            keyAlias = "glow"
+            keyPassword = localProperties.getProperty("KEY_PASSWORD") ?: System.getenv("KEY_PASSWORD")
+        }
+    }
+
     defaultConfig {
         applicationId = "ca.cgagnier.wlednativeandroid"
         minSdk = 24
@@ -49,6 +65,7 @@ android {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
+            signingConfig = signingConfigs.getByName("release")
             setProguardFiles(listOf(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"))
             ndk {
                 debugSymbolLevel = "FULL"
