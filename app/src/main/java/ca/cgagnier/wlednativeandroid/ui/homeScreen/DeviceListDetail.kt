@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Settings
@@ -256,8 +257,9 @@ private fun DrawerContent(
         horizontalArrangement = Arrangement.Center
     ) {
         Image(
-            painter = painterResource(id = R.drawable.wled_logo_akemi),
-            contentDescription = stringResource(R.string.app_logo)
+            painter = painterResource(id = R.drawable.logo_glow),
+            contentDescription = stringResource(R.string.app_logo),
+            modifier = Modifier.size(120.dp)
         )
     }
     NavigationDrawerItem(
@@ -360,8 +362,9 @@ fun SelectDeviceView() {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Image(
-                painter = painterResource(id = R.drawable.wled_logo_akemi),
-                contentDescription = stringResource(R.string.app_logo)
+                painter = painterResource(id = R.drawable.logo_glow),
+                contentDescription = stringResource(R.string.app_logo),
+                modifier = Modifier.size(120.dp)
             )
             Text(stringResource(R.string.select_a_device_from_the_list))
         }

@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Menu
@@ -183,8 +184,9 @@ fun DeviceListAppBar(
         modifier = modifier,
         title = {
             Image(
-                painter = painterResource(id = R.drawable.wled_logo_akemi),
-                contentDescription = stringResource(R.string.app_logo)
+                painter = painterResource(id = R.drawable.logo_glow),
+                contentDescription = stringResource(R.string.app_logo),
+                modifier = Modifier.size(120.dp)
             )
         },
         navigationIcon = {
