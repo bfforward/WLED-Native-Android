@@ -31,10 +31,10 @@ android {
     }
 
     defaultConfig {
-        applicationId = "ca.cgagnier.wlednativeandroid"
+        applicationId = "com.glowpermanentlights.android.app"
         minSdk = 24
         targetSdk = 35
-        versionCode = 25050911
+        versionCode = 25051212
         versionName = "2.0.0"
         resourceConfigurations += listOf("en", "fr")
 
