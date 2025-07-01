@@ -31,10 +31,10 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.glowpermanentlights.android.app"
+        applicationId = "com.getlumilights.android.app"
         minSdk = 24
         targetSdk = 35
-        versionCode = 25051212
+        versionCode = 25060920
         versionName = "2.0.0"
         resourceConfigurations += listOf("en", "fr")
 

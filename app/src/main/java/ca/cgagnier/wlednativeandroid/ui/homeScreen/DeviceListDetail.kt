@@ -257,7 +257,7 @@ private fun DrawerContent(
         horizontalArrangement = Arrangement.Center
     ) {
         Image(
-            painter = painterResource(id = R.drawable.logo_glow),
+            painter = painterResource(id = R.drawable.logo_avia),
             contentDescription = stringResource(R.string.app_logo),
             modifier = Modifier.size(120.dp)
         )
@@ -362,7 +362,7 @@ fun SelectDeviceView() {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Image(
-                painter = painterResource(id = R.drawable.logo_glow),
+                painter = painterResource(id = R.drawable.logo_avia),
                 contentDescription = stringResource(R.string.app_logo),
                 modifier = Modifier.size(120.dp)
             )
