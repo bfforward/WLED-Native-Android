@@ -5,7 +5,6 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.dataStore
 import ca.cgagnier.wlednativeandroid.repository.AssetDao
 import ca.cgagnier.wlednativeandroid.repository.DeviceDao
-import ca.cgagnier.wlednativeandroid.repository.DeviceRepository
 import ca.cgagnier.wlednativeandroid.repository.DevicesDatabase
 import ca.cgagnier.wlednativeandroid.repository.UserPreferences
 import ca.cgagnier.wlednativeandroid.repository.UserPreferencesRepository
@@ -14,8 +13,6 @@ import ca.cgagnier.wlednativeandroid.repository.VersionDao
 import ca.cgagnier.wlednativeandroid.repository.VersionWithAssetsRepository
 import ca.cgagnier.wlednativeandroid.repository.migrations.UserPreferencesV0ToV1
 import ca.cgagnier.wlednativeandroid.service.NetworkConnectivityManager
-import ca.cgagnier.wlednativeandroid.service.device.StateFactory
-import ca.cgagnier.wlednativeandroid.service.device.api.JsonApiRequestHandler
 import ca.cgagnier.wlednativeandroid.service.update.ReleaseService
 import dagger.Module
 import dagger.Provides
@@ -34,8 +31,7 @@ private val Context.userPreferencesStore: DataStore<UserPreferences> by dataStor
     serializer = UserPreferencesSerializer(),
     produceMigrations = { _ ->
         listOf(UserPreferencesV0ToV1())
-    }
-)
+    })
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -66,25 +62,16 @@ object AppContainer {
 
     @Provides
     @Singleton
-    fun provideDeviceRepository(deviceDao: DeviceDao): DeviceRepository {
-        return DeviceRepository(deviceDao)
-    }
-
-    @Provides
-    @Singleton
     fun provideVersionWithAssetsRepository(
-        versionDao: VersionDao, assetDao: AssetDao
+        appDatabase: DevicesDatabase, versionDao: VersionDao, assetDao: AssetDao
     ): VersionWithAssetsRepository {
-        return VersionWithAssetsRepository(versionDao, assetDao)
+        return VersionWithAssetsRepository(appDatabase, versionDao, assetDao)
     }
 
     @Provides
     @Singleton
-    fun provideStateFactory(
-        deviceRepository: DeviceRepository, versionWithAssetsRepository: VersionWithAssetsRepository
-    ): StateFactory {
-        val releaseService = ReleaseService(versionWithAssetsRepository)
-        return StateFactory(JsonApiRequestHandler(deviceRepository, releaseService))
+    fun providesReleaseService(versionWithAssetsRepository: VersionWithAssetsRepository): ReleaseService {
+        return ReleaseService(versionWithAssetsRepository)
     }
 
     @Provides
@@ -112,8 +99,7 @@ object AppContainer {
     @Provides
     @Singleton
     fun providesNetworkConnectivityManager(
-        @ApplicationContext appContext: Context,
-        coroutineScope: CoroutineScope
+        @ApplicationContext appContext: Context, coroutineScope: CoroutineScope
     ): NetworkConnectivityManager {
         return NetworkConnectivityManager(appContext, coroutineScope)
     }
