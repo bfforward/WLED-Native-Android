@@ -30,17 +30,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import ca.cgagnier.wlednativeandroid.R
-import ca.cgagnier.wlednativeandroid.model.Device
 import ca.cgagnier.wlednativeandroid.model.VersionWithAssets
+import ca.cgagnier.wlednativeandroid.service.websocket.DeviceWithState
 import ca.cgagnier.wlednativeandroid.ui.components.deviceName
+import ca.cgagnier.wlednativeandroid.ui.preview.getPreviewDevice
 import ca.cgagnier.wlednativeandroid.ui.theme.WLEDNativeTheme
 
 @Composable
 fun UpdateInstallingDialog(
-    device: Device,
+    device: DeviceWithState,
     version: VersionWithAssets,
     onDismiss: () -> Unit,
     viewModel: UpdateInstallingViewModel = hiltViewModel()
@@ -48,7 +49,7 @@ fun UpdateInstallingDialog(
     val state by viewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
-    LaunchedEffect(device.address) {
+    LaunchedEffect(device.device.address) {
         viewModel.startUpdate(device, version, context.cacheDir)
     }
 
@@ -68,7 +69,7 @@ fun UpdateInstallingDialog(
 @Composable
 fun UpdateInstallingDialog(
     state: UpdateInstallingState,
-    device: Device,
+    device: DeviceWithState,
     onDismiss: () -> Unit,
     onToggleErrorMessage: () -> Unit,
 ) {
@@ -77,7 +78,7 @@ fun UpdateInstallingDialog(
             Text(
                 stringResource(
                     R.string.updating,
-                    deviceName(device)
+                    deviceName(device.device)
                 )
             )
         },
@@ -179,7 +180,7 @@ private fun UpdateInstallingStatus(
             modifier = modifier,
             painter = painterResource(R.drawable.ic_twotone_check_circle_outline_24),
             contentDescription = stringResource(R.string.update_completed),
-            tint = Color(0xFF00b300)
+            tint = Color(0xFF00b300) // Green
         )
     }
 }
@@ -265,7 +266,7 @@ fun UpdateInstallingDialogStepStartingPreview(
     WLEDNativeTheme(darkTheme = isSystemInDarkTheme()) {
         UpdateInstallingDialog(
             state = state,
-            device = Device.getPreviewDevice(),
+            device = getPreviewDevice(),
             onDismiss = {},
             onToggleErrorMessage = {}
         )
